@@ -12,6 +12,7 @@ These code snippets should be inserted into the `functions.php` file, preferably
 Organizes products based on the quantity in stock, prioritizing available products when displaying listings in WooCommerce (store, categories, product tags).
 
 ```php
+// Organizes products based on the quantity in stock, prioritizing available products when displaying listings in WooCommerce (store, categories, product tags).
 class DWP_Orderby_Stock_Status {
     public function __construct(){
 	if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) {
@@ -32,13 +33,14 @@ class DWP_Orderby_Stock_Status {
     }
 }
 
-new DWP_Orderby_Stock_Status;# Conjunto te Plugin Personalizado para WordPress
+new DWP_Orderby_Stock_Status;
 ```
 
 #### Alternative:
 ### 'Out of Stock' products to the end of the list
 
 ```php
+// 'Out of Stock' products to the end of the list
 if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) {
     add_filter('posts_clauses', 'order_by_stock_status', 2000);
 }
@@ -57,6 +59,7 @@ function order_by_stock_status($posts_clauses) {
 
 ### Shortcode to list all product categories
 ```php
+// Shortcode to list all product categories
 function display_product_categories() {
     $product_categories = get_terms( array(
 	'taxonomy' => 'product_cat',
@@ -81,6 +84,7 @@ add_shortcode( 'product_categories_list', 'display_product_categories' );
 
 ### Return recent products when search has no results
 ```php
+// Return recent products when search has no results
 add_action( 'woocommerce_no_products_found', 'show_products_on_no_products_found', 20 );
 function show_products_on_no_products_found() {
     echo '<h4 class="aligncenter quemsabe">' . __( 'Mas você pode gostar destes:', 'domain' ) . '</h4>';
@@ -90,6 +94,7 @@ function show_products_on_no_products_found() {
 
 ### Permission for Store Managers to edit users
 ```php
+// Permission for Store Managers to edit users
 function wws_add_shop_manager_user_editing_capability() {
     $shop_manager = get_role( 'shop_manager' );
     $shop_manager->add_cap( 'edit_users' );
@@ -100,6 +105,7 @@ add_action( 'admin_init', 'wws_add_shop_manager_user_editing_capability');
 
 ### Removes Password Strength Check in Customer Registration
 ```php
+// Removes Password Strength Check in Customer Registration
 function iconic_remove_password_strength() {
     wp_dequeue_script( 'wc-password-strength-meter' );
 }
@@ -108,17 +114,20 @@ add_action( 'wp_print_scripts', 'iconic_remove_password_strength', 10 );
 
 ### Rename order status 'Processing'
 ```php
+// Rename order status 'Processing'
 add_filter( 'wc_order_statuses', 'rename_completed_order_status' );
 function rename_completed_order_status( $statuses ) {
    $statuses['wc-processing'] = 'Pedido Recebido';
    return $statuses;
 }
 ```
+
 ## Wordpress
 -----------------
 
-### Remover versão de estilos e scripts
+### Remove ?ver= argument in url from styles/scripts
 ```php
+// Remove ?ver= argument in url from styles/scripts
 function remove_css_js_version( $src ) {
     if( strpos( $src, '?ver=' ) )
 	$src = remove_query_arg( 'ver', $src );
@@ -130,21 +139,21 @@ add_filter( 'script_loader_src', 'remove_css_js_version', 9999 );
 
 ### Remove WP version from Head and Feeds
 ```php
-function artisansweb_remove_version() {
-    return '';
-}
-add_filter('the_generator', 'artisansweb_remove_version');
+// Remove WP version from Head and Feeds
+function wp_remove_version() {return '';}
+add_filter('the_generator', 'wp_remove_version');
 ```
 
 ### Filter to remove Rank Math credits from the website's HTML body
 ```php
+// Filter to remove Rank Math credits from the website's HTML body
 add_filter( 'rank_math/frontend/remove_credit_notice', '__return_true' );
 ```
 
 ### Convert JPEG and PNG Images to WebP on Upload
-
 This feature automatically converts JPEG and PNG images uploaded to WordPress to WebP format, optimizing website performance.
 ```php
+// Convert JPEG and PNG Images to WebP on Upload
 function convert_uploaded_images_to_webp($image_data) {
     if ($image_data['type'] != 'image/jpeg' && $image_data['type'] != 'image/png') {
 	return $image_data;
@@ -202,6 +211,8 @@ add_filter('wp_handle_upload', 'convert_uploaded_images_to_webp');
 This feature adds support for uploading SVG files to WordPress, allowing SVGs to be uploaded directly to the media library.
 
 ```php
+// SVG File Upload Support
+// This feature adds support for uploading SVG files to WordPress, allowing SVGs to be uploaded directly to the media library.
 function add_svg_support( $mimes ) {
     $mimes['svg'] = 'image/svg+xml';
     return $mimes;
@@ -214,6 +225,8 @@ add_filter( 'upload_mimes', 'add_svg_support' );
 Adds Google Tag Manager code to your website header for traffic monitoring and analytics collection.
 
 ```php
+// Integration with Google Tag Manager
+// Adds Google Tag Manager code to your website header for traffic monitoring and analytics collection.
 function adsandmetas() {
     ?>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXXX"></script>
@@ -233,6 +246,9 @@ add_action( 'wp_head', 'adsandmetas' );
 This code disables all actions and filters related to RSS Feeds in WordPress, such as RDF, RSS, RSS2 and Atom feeds, preventing the site from generating feeds.
 
 ```php
+// Disabling RSS Feeds
+// This code disables all actions and filters related to RSS Feeds in WordPress, such as RDF, RSS, RSS2 and Atom feeds, preventing the site from generating feeds.
+
 add_action( 'init', $af = function() {
     remove_action( 'do_feed_rdf', 'do_feed_rdf', 10 );
     remove_action( 'do_feed_rss', 'do_feed_rss', 10 );

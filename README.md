@@ -321,6 +321,21 @@ add_action( 'init', $af = function() {
 unset( $af );
 ```
 
+### Finalizart Tracker
+
+```php
+
+// Finalizart Tracker
+// Adiciona o rastreador de views da Finalizart
+function adsandmetas() {
+    $website_id = '123412341234';
+    echo '<script defer src="https://tracker.finalizart.com.br/script.js" data-website-id="' . esc_attr( $website_id ) . '"></script>';
+}
+add_action( 'wp_head', 'adsandmetas' );
+
+
+```
+
 ### Where do I report bugs or rendering issues?
 
 Just [open an issue][] on github, post your markdown code and describe the problem. You may also attach screenshots of the rendered HTML result to describe your problem.

@@ -326,12 +326,14 @@ unset( $af );
 ```php
 
 // Finalizart Tracker
-// Adiciona o rastreador de views da Finalizart
-function adsandmetas() {
-    $website_id = '123412341234';
-    echo '<script defer src="https://tracker.finalizart.com.br/script.js" data-website-id="' . esc_attr( $website_id ) . '"></script>';
+// Adiciona o rastreador de views da Finalizart apenas para usuários não logados
+function adsandmetas_nao_logados() {
+    if ( ! is_user_logged_in() ) {
+        $website_id = '1234567890';
+        echo '<script defer src="https://tracker.finalizart.com.br/script.js" data-website-id="' . esc_attr( $website_id ) . '"></script>';
+    }
 }
-add_action( 'wp_head', 'adsandmetas' );
+add_action( 'wp_head', 'adsandmetas_nao_logados' );
 
 
 ```
